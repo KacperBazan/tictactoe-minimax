@@ -5,19 +5,21 @@
  * 11/20/2020
  */
 
+/*Useful Links:
+ * Algorithms Explained: https://www.youtube.com/watch?v=l-hh51ncgDI
+ */
+
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
-    /*Mouse Variables*/
     public GameObject mouseCursor;
     public GameObject hoverItem;
     [HideInInspector]
     public MouseCursor mouseCursorScript;
     public Text winText;
 
-    /*Array Variables*/
     public string[,] boardState = new string[3, 3]; //string representation of the board.
     public GameObject[,] boardObjects = new GameObject[3, 3]; //instantiated x's and o's
     public GameObject[,] buttons = new GameObject[3, 3]; //clickable buttons
@@ -25,24 +27,17 @@ public class Game : MonoBehaviour
     private KeyCode[] switchKeys = new KeyCode[] { KeyCode.T };
     private int[] bestMove = new int[2];
 
-    /*Player Token Game Objects*/
     public GameObject xGameObject;
     public GameObject oGameObject;
-
-    /*Game Variables*/
-    private bool xMove = true; //Since x starts, nthe initial xMove must be true.
+    private bool xMove = true;
     private bool doesPlayerStart = true;
-    private bool playerTurn = true; //player will always start.n
-    private int winner = 0; //board state initially isn't win or lose.
-
+    private bool playerTurn = true;
+    private int winner = 0;
 
     void Start()
     {
         Cursor.visible = true;
         mouseCursorScript = FindObjectOfType<MouseCursor>();
-
-
-        //Initializes boxes array with the 9 game objects and enables their colliders.
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
@@ -63,16 +58,15 @@ public class Game : MonoBehaviour
             {
                 buttons[i, j].GetComponent<BoxCollider>().enabled = true; //turn on buttons
                 mouseCursor.transform.position = new Vector3(-100f, -100f, 0f);
-                //buttons[i, j].GetComponent<MeshRenderer>().enabled = true;
-                boardState[i, j] = null; //set each string to null
+                boardState[i, j] = null;
                 if (boardObjects[i, j] != null)
                 {
-                    Destroy(boardObjects[i, j].gameObject); //destroy instatiated objects
+                    Destroy(boardObjects[i, j].gameObject);
                 }
             }
         }
-        xMove = true; //Since x starts, the xMove must be true.
-        playerTurn = doesPlayerStart; //player will always start.
+        xMove = true;
+        playerTurn = doesPlayerStart;
     }
 
     void DisableSpaces()
@@ -108,36 +102,36 @@ public class Game : MonoBehaviour
 
     void AIMove()
     {
-        if(CheckWin(boardState)!= 0 || CheckTie(boardState))
+        if (CheckWin(boardState) != 0 || CheckTie(boardState))
         {
             return;
         }
         else
         {
-            MiniMax(boardState, 9,-1000,1000, xMove,9);
+            MiniMax(boardState, 9, -1000, 1000, xMove, 9);
             XMove(xMove, bestMove[0], bestMove[1]);
             playerTurn = !playerTurn;
         }
     }
 
-    int MiniMax(string[,] position, int depth,int alpha, int beta, bool maximizingPlayer, int startingDepth)
+    int MiniMax(string[,] position, int depth, int alpha, int beta, bool maximizingPlayer, int startingDepth)
     {
         if (depth == 0 || CheckWin(position) != 0 || CheckTie(position))
         {
             return CheckWin(position);
         }
-        
-        if(maximizingPlayer)
+
+        if (maximizingPlayer)
         {
             int maxEval = -1000;
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    if(position[i,j] == null)
+                    if (position[i, j] == null)
                     {
-                        position[i,j] = "X";
-                        int eval = MiniMax(position, depth-1, alpha, beta, false, startingDepth);
+                        position[i, j] = "X";
+                        int eval = MiniMax(position, depth - 1, alpha, beta, false, startingDepth);
                         position[i, j] = null;
 
                         if (eval > maxEval)
@@ -169,7 +163,7 @@ public class Game : MonoBehaviour
                 {
                     if (position[i, j] == null)
                     {
-                        position[i,j] = "O";
+                        position[i, j] = "O";
                         int eval = MiniMax(position, depth - 1, alpha, beta, true, startingDepth);
                         position[i, j] = null;
 
@@ -183,7 +177,7 @@ public class Game : MonoBehaviour
                             }
                         }
                         beta = Mathf.Min(beta, eval);
-                        if(beta<= alpha)
+                        if (beta <= alpha)
                         {
                             break;
                         }
@@ -260,8 +254,6 @@ public class Game : MonoBehaviour
             }
         }
         return 0;
-
-
     }
     bool CheckTie(string[,] stringVal)
     {
@@ -300,7 +292,6 @@ public class Game : MonoBehaviour
             }
         }
 
-        //transforms mouse
         float x = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
         float y = Camera.main.ScreenToWorldPoint(Input.mousePosition).y;
         mouseCursor.transform.position = new Vector3(x, y, 0);
@@ -322,7 +313,7 @@ public class Game : MonoBehaviour
         else
         {
             DisableSpaces();
-            switch(winner)
+            switch (winner)
             {
                 case -1:
                     winText.text = "O has won!";
@@ -336,6 +327,5 @@ public class Game : MonoBehaviour
 
             }
         }
-
     }
 }
