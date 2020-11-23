@@ -942,7 +942,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -259}
-  m_SizeDelta: {x: 361.9, y: 50.7}
+  m_SizeDelta: {x: 394.1, y: 77.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1099635296
 MonoBehaviour:
@@ -979,7 +979,10 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Press "R" to Restart.
 
-    Left Click on Empty Spaces.'
+    Press "T" to Switch Starting Players.
+
+    Left
+    Click on Empty Spaces.'
 --- !u!222 &1099635297
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -587,4 +587,4 @@ ScriptsOnlyBuild:
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: C:/Users/Kacper Bazan/Desktop/TicTacToe_Build/TicTacToe.exe
+  playerPath: C:/Users/Kacper Bazan/Desktop/TicTacToe_Build/Build 1.2/TicTacToe.exe
