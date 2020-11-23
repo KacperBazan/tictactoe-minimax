@@ -114,13 +114,13 @@ public class Game : MonoBehaviour
         }
         else
         {
-            MiniMax(boardState, 9, xMove,9);
+            MiniMax(boardState, 9,-1000,1000, xMove,9);
             XMove(xMove, bestMove[0], bestMove[1]);
             playerTurn = !playerTurn;
         }
     }
 
-    int MiniMax(string[,] position, int depth, bool maximizingPlayer, int startingDepth)
+    int MiniMax(string[,] position, int depth,int alpha, int beta, bool maximizingPlayer, int startingDepth)
     {
         if (depth == 0 || CheckWin(position) != 0 || CheckTie(position))
         {
@@ -137,7 +137,7 @@ public class Game : MonoBehaviour
                     if(position[i,j] == null)
                     {
                         position[i,j] = "X";
-                        int eval = MiniMax(position, depth-1, false, startingDepth);
+                        int eval = MiniMax(position, depth-1, alpha, beta, false, startingDepth);
                         position[i, j] = null;
 
                         if (eval > maxEval)
@@ -148,8 +148,11 @@ public class Game : MonoBehaviour
                                 bestMove[0] = i;
                                 bestMove[1] = j;
                             }
-
-
+                        }
+                        alpha = Mathf.Max(alpha, eval);
+                        if (beta <= alpha)
+                        {
+                            break;
                         }
                     }
                 }
@@ -167,7 +170,7 @@ public class Game : MonoBehaviour
                     if (position[i, j] == null)
                     {
                         position[i,j] = "O";
-                        int eval = MiniMax(position, depth - 1, true, startingDepth);
+                        int eval = MiniMax(position, depth - 1, alpha, beta, true, startingDepth);
                         position[i, j] = null;
 
                         if (eval < minEval)
@@ -179,7 +182,11 @@ public class Game : MonoBehaviour
                                 bestMove[1] = j;
                             }
                         }
-                        
+                        beta = Mathf.Min(beta, eval);
+                        if(beta<= alpha)
+                        {
+                            break;
+                        }
                     }
                 }
             }
